@@ -1,15 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Left from './Left'
 import Right from './Right'
 
 
 const Section2 = () => {
-
+  
   const [editIndex, setEditIndex] = useState(null)
-  const [allNotes, setAllNotes] = useState([]);
+const [allNotes, setAllNotes] = useState(() => {
+try {
+    return JSON.parse(localStorage.getItem("All Notes")) || [];
+  } catch {
+    return [];
+  }
+}
+);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  
+  useEffect(()=>{  
+      localStorage.setItem('All Notes', JSON.stringify(allNotes))
+  }, [allNotes])
 
+  // useEffect(()=>{  
+  //   console.log(allNotes);        
+  //   if(allNotes.length>0){
+  //     localStorage.setItem('All Notes', JSON.stringify(allNotes))
+  //   }
+  // }, [allNotes])
+  // useEffect(()=>{
+  //   let localStorageGetEachNotes = localStorage.getItem('All Notes')
+  //   if (localStorageGetEachNotes) {
+  //     setAllNotes(JSON.parse(localStorageGetEachNotes))
+  // }
+  // }, [])
+  
   const del = (i) =>{
     setAllNotes(allNotes.filter((e, index)=> index != i)) 
   }
